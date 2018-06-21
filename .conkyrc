@@ -1,0 +1,94 @@
+conky.config = {
+	use_xft= true,
+	xftalpha= .1,
+	update_interval= 1,
+	total_run_times= 0,
+
+	background= true,
+
+	own_window= true,
+	own_window_type= 'desktop',
+	own_window_transparent= true,
+	own_window_hints= 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	own_window_colour= '000000',
+	own_window_argb_visual= true,
+	own_window_argb_value= 0,
+
+	double_buffer= true,
+
+	minimum_width= 270,
+	maximum_width= 270,
+
+	minimum_height= 10,
+
+	draw_shades= false,
+	draw_outline= false,
+	draw_borders= false,
+	draw_graph_borders= false,
+	
+	default_color= 'FFFFFF',
+	default_shade_color= '333333',
+	default_outline_color= 'black',
+	color1 = '33FF00',
+	color3 = '616161',
+
+	alignment= 'top_right',
+	gap_x= 56,
+	gap_y= 0,
+	no_buffers= true,
+	text_buffer_size = 2048,
+	uppercase= false,
+	cpu_avg_samples= 4,
+	net_avg_samples = 2,
+	override_utf8_locale= true,
+
+	font= 'Ubuntu:style=medium:size=9'
+}
+
+conky.text = [[
+
+${color1}
+${voffset 20}
+${alignr}${font Ubuntu:style=Medium:pixelsize=50}${time %H:%M}${font}
+${voffset 10}
+${alignr}${font Ubuntu:style=Medium:pixelsize=13}${time %A %d %B %Y}${font}
+
+${voffset 30}
+${color1}$nodename     ${alignr}$sysname $kernel
+Battery: ${battery_short} ${alignr}${battery_bar 5,100}
+${hr}
+
+${if_existing /proc/net/route enp0s25}${font FontAwesome}${font} ${alignr}${addrs enp0s25}${endif}
+${if_existing /proc/net/route wlo1}${font FontAwesome}${font} ${wireless_link_qual wlo1}% ${wireless_essid wlo1} ${alignr}${addrs wlo1}${endif}
+${if_existing /proc/net/route virbr0}${font FontAwesome}${font} vbox ${alignr}${addrs virbr0}${endif}
+${if_existing /proc/net/route docker0}${font FontAwesome}${font} docker ${alignr}${addrs docker0}${endif}
+${hr}
+${font FontAwesome}${font} ${alignr}${exec curl -s ipinfo.io/ip}
+${hr}
+
+
+${color1}Uptime:${color1} $uptime ${color1} Load:${color1} $loadavg
+${color1}CPU:${color1} ${cpu}% ${color1}${cpubar 5,85}   ${color1}Disk I/O: $color1${diskio}
+${color1}RAM Usage:${color1} $mem${color1}/${color1}$memmax - $memperc% ${color1}$membar
+${color1}Swap Usage:${color1} $swap${color1}/${color1}$swapmax - $swapperc% ${color1}${swapbar}
+
+${color1}Top Processes:
+${color1}Name              PID     CPU%   MEM%
+${color1} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
+${color1} ${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}
+${color1} ${top name 3} ${top pid 3} ${top cpu 3} ${top mem 3}
+${color1}Mem usage
+${color1} ${top_mem name 1} ${top_mem pid 1} ${top_mem cpu 1} ${top_mem mem 1}
+${color1} ${top_mem name 2} ${top_mem pid 2} ${top_mem cpu 2} ${top_mem mem 2}
+${color1} ${top_mem name 3} ${top_mem pid 3} ${top_mem cpu 3} ${top_mem mem 3}
+${hr}
+
+Active Docker Containers:
+${exec /home/ryanm/bin/docker-status.py}
+${hr}
+
+${font FontAwesome}${font}   upload ${alignr}${upspeedf wlo1}k/s (${totalup wlo1})
+${color1}${font FontAwesome}${font}   download ${alignr}${downspeedf wlo1}k/s (${totaldown wlo1})
+${color1}${upspeedgraph wlo1 32,100 99c8e8 33ff00} ${alignr}${color1}${downspeedgraph wlo1 32,100 5e7b7b 33ff00}
+
+]]
